@@ -1,5 +1,6 @@
 import dotenv from 'dotenv'
 import connectDB from './db/db.js'
+import app from './app.js';
 // import mongoose from 'mongoose'
 // import {DB_NAME} from './constants'
 
@@ -7,7 +8,18 @@ dotenv.config({
     path:'./env'
 })
 
-connectDB();
+const port = process.env.PORT
+
+connectDB().then(
+    app.listen(port || 8000, ()=>{
+        console.log(`Server is Running at port ${port}`);    
+    })
+).catch(
+    (error)=>{
+        console.log("MONGODB Connection Failed!!!", error);
+        
+    }
+)
 
 
 // IIFE Method to connect Database
