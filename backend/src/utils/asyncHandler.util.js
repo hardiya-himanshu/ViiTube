@@ -1,7 +1,5 @@
-import { Promise } from "mongoose"
-
 const asyncHandler = (fn) => {
-    (req, res, next)=>{
+    return (req, res, next)=>{
         Promise.resolve(fn(req, res, next)).reject((error)=> next(error))
     }
 }
