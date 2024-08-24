@@ -1,4 +1,5 @@
 import {v2 as cloudinary} from 'cloudinary'
+import ApiError from './apiError.util.js';
 import fs from 'fs'
 
 cloudinary.config({ 
@@ -12,7 +13,7 @@ const uploadOnCloudinary = async(localFilePath) =>{
         if(!localFilePath) return null
         const uploadResponse = await cloudinary.uploader
         .upload(
-           localFilePath, {resource_type:"auto"}
+           localFilePath, {folder: 'ViiTube'} 
         )
         fs.unlinkSync(localFilePath)
         return uploadResponse
@@ -22,4 +23,26 @@ const uploadOnCloudinary = async(localFilePath) =>{
     }
 }
 
-export default uploadOnCloudinary
+const extractPublicId = (url) => {
+    const parts = url.split('/');
+    const publicIdWithExtension = parts[parts.length - 1]; // e.g., sample.jpg
+    const publicId = publicIdWithExtension.split('.')[0]; // e.g., sample
+    return publicId;
+};
+
+const deleteCloudinaryFile = async(filePublicURL) =>{
+    try {
+        if(!filePublicURL) throw new ApiError(400, "Required File is Missing")
+        const publicId = extractPublicId(filePublicURL)
+        
+        const fileDeletedResponse =  await cloudinary.uploader.destroy(`ViiTube/`+publicId )
+        
+        if (fileDeletedResponse.result !== 'ok') {
+            throw new ApiError(400, "Failed to delete file from Cloudinary");
+        }
+    } catch (error) {
+        throw new ApiError(500, "Something went wrong while deleting file from cloudinary")
+    }
+}
+
+export {uploadOnCloudinary, deleteCloudinaryFile}

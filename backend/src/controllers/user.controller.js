@@ -2,8 +2,9 @@ import asyncHandler from '../utils/asyncHandler.util.js'
 import ApiError from '../utils/apiError.util.js';
 import ApiResponse from '../utils/apiResponse.util.js';
 import {User} from '../models/user.model.js'
-import uploadOnCloudinary from '../utils/cloudinary.util.js'
+import {uploadOnCloudinary} from '../utils/cloudinary.util.js'
 import jwt from 'jsonwebtoken'
+import {deleteCloudinaryFile} from '../utils/cloudinary.util.js';
 
 const generateAccessAndRefreshToken = async(userId)=>{
     try 
@@ -41,9 +42,10 @@ const registerUser = asyncHandler(async(req, res)=>{
     const existedUser = await User.findOne({$or:[{userName}, {email}]})
     if(existedUser) throw new ApiError(409, "User with email or username already exists")
     
-    // console.log(req.files);
+    console.log(req.files);
     
     const avatarLocalPath = req.files?.avatar[0]?.path
+    
     // const coverImageLocalPath = req.files?.coverImage[0]?.path
     if(!avatarLocalPath) throw new ApiError(400, "Avatar file is required")
     let coverImageLocalPath
@@ -187,12 +189,17 @@ const updateAccountDetails = asyncHandler(async(req,res)=>{
 
 const updateUserAvatar = asyncHandler(async(req, res)=>{
     const avatarLocalPath = req.file?.path
-
+    // console.log(avatarLocalPath);
+    
     if(!avatarLocalPath) throw new ApiError(400, "Avatar file is missing")
 
     const avatar = await uploadOnCloudinary(avatarLocalPath)
 
     if(!avatar.url) throw new ApiError(400, "Error while uploading on avatar")
+
+    const previousAvatar = req.user?.avatar
+    // console.log(previousAvatar);
+    
 
     const user = await User.findByIdAndUpdate(req.user?._id, {
         $set:{
@@ -201,6 +208,10 @@ const updateUserAvatar = asyncHandler(async(req, res)=>{
     },{
         new:true
     }).select("-password")
+
+    if(previousAvatar){
+        await deleteCloudinaryFile(previousAvatar)
+    } 
 
     return res.status(200).json(new ApiResponse(200, user, "Avatar updated successfully"))
 })
