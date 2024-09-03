@@ -107,8 +107,8 @@ const loginUser = asyncHandler(async(req, res)=>{
 
 const logoutUser = asyncHandler(async(req, res)=>{
     await User.findByIdAndUpdate(req.user._id, {
-        $set:{
-            refreshToken:undefined
+        $unset:{
+            refreshToken:1
         },
     },
     {
@@ -158,7 +158,7 @@ const changeCurrentPassword = asyncHandler(async(req, res)=>{
 })
 
 const getCurrentUser = asyncHandler(async(req,res)=>{
-    return res.status(200).json(200, req.user, "Current user fetched successfully")
+    return res.status(200).json(new ApiResponse(200, req.user, "Current user fetched successfully"))
 })
 
 const updateAccountDetails = asyncHandler(async(req,res)=>{
@@ -304,7 +304,8 @@ const getWatchHistory = asyncHandler(async(req, res)=>{
             $match:{
                 _id: new mongoose.Types.ObjectId(req.user._id)
             },
-            $lookup:{
+        },
+        {    $lookup:{
                 from:"videos",
                 localField:"watchHistory",
                 foreignField:"_id",
