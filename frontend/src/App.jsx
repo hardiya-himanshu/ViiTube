@@ -6,14 +6,19 @@ import {Outlet} from 'react-router-dom'
 import Footer from './components/footer/Footer'
 
 function App() {
+  
+  const[isSidebarVisible, setSidebarState] = useState(false)
+  const toggleSidebar = ()=>{
+    setSidebarState(!isSidebarVisible)
+  }
 
   return (
     <div>
       <header>
-        <Header/>
+        <Header toggleSidebar={toggleSidebar}/>
       </header>
       <aside>
-        <Sidebar/>
+        <Sidebar toggleSidebar={toggleSidebar} isSidebarVisible={isSidebarVisible}/>
       </aside>
       <section>
         <Outlet />

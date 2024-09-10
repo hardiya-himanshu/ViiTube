@@ -1,13 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 import ViiTubeTheme from '../../utils/ViiTubeTheme'
 
-function Header({darkMode, onToggleTheme}) {
+function Header({darkMode, onToggleTheme, toggleSidebar}) {
   return (
     <>
-        <nav className={`${darkMode?"bg-gray-800 text-white":"bg-blue-200 text-black"} flex justify-between items-center p-2`}>
+        <nav className={`${darkMode?"bg-customDark text-customWhite":"bg-customLight text-customBlack"} flex justify-between items-center py-2 px-5`}>
             <div>
                 {/* MENU ICON */}
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                <svg onClick={toggleSidebar} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6 hover:cursor-pointer">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                 </svg>
             </div>
