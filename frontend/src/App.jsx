@@ -1,15 +1,28 @@
 import { useState } from 'react'
 import './App.css'
-import ViiTubeTheme from './utils/ViiTubeTheme'
+import Header from './components/header/Header'
+import Sidebar from './components/sidebar/Sidebar'
+import {Outlet} from 'react-router-dom'
+import Footer from './components/footer/Footer'
 
-function App({darkMode, onToggleTheme}) {
+function App() {
 
   return (
-    <div className={`${darkMode?"bg-green-500":"bg-pink-800"} `}>
-      <br />
-        <button onClick={onToggleTheme}>click</button>
+    <div>
+      <header>
+        <Header/>
+      </header>
+      <aside>
+        <Sidebar/>
+      </aside>
+      <section>
+        <Outlet />
+      </section>
+      <footer>
+        <Footer/>
+      </footer>
     </div>
   )
 }
 
-export default ViiTubeTheme(App)
+export default App
