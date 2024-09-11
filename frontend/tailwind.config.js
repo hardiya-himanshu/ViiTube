@@ -10,7 +10,7 @@ export default {
         customLight: '#F2F2F2',
         customLight2: '#FFFFFF',
         customDark: '#1A1A1A',
-        customDark2: '#4D4D4D',
+        customDark2: '#333333',
         customBlack: 'black',
         customWhite: 'white'
       },

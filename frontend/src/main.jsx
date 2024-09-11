@@ -22,16 +22,17 @@ const router = createBrowserRouter([
         path: "/",
         element: <Home />,
       },
-      {
-          path: "/login",
-          element:<Login />
-      },
-      {
-          path: "/signup",
-          element:<Signup />
-      },
+      
     ]
-  }
+  },
+  {
+    path: "/login",
+    element:<Login />
+  },
+  {
+    path: "/signup",
+    element:<Signup />
+  },
 ])
 
 createRoot(document.getElementById('root')).render(
