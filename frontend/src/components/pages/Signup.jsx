@@ -1,12 +1,16 @@
 import React, {useRef, useState} from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import ViiTubeTheme from '../../utils/ViiTubeTheme';
 
 const Signup = ({darkMode}) => {
   const[avatar, setAvatar] = useState("")
   const[coverImage, setCoverImage] = useState("")
 
+  const coverImageInputRef = useRef(null);
+  const avatarInputRef = useRef(null);
+
   const {
+    control,
     register,
     handleSubmit,
     formState: { errors },
@@ -38,32 +42,42 @@ const Signup = ({darkMode}) => {
     }
   };
   const handleAvatarUpload = ()=>{
-    document.getElementById("avatarInput").click()
+    avatarInputRef.current.click()
   }
   const handleCoverImageUpload = ()=>{
-    document.getElementById("coverImageInput").click()
+    coverImageInputRef.current.click()
   }
 
   
   return (
     <div className='w-full h-full '>
 
-    <div className={`${darkMode?"bg-customDark text-customWhite":"bg-customLight text-customBlack"} max-w-md mx-auto mt-10 border overflow-hidden rounded-xl`}>
+    <div className={`${darkMode?"bg-customDark text-customWhite":"bg-customLight text-customBlack"} max-w-md mx-auto mt-10 overflow-hidden rounded-xl p-1 `}>
 
-      <form onSubmit={handleSubmit(onSubmit)} className='relative border flex flex-col items-center rounded-xl'>
+      <form onSubmit={handleSubmit(onSubmit)} className=' relative flex flex-col items-center rounded-xl'>
         
-      <h2 className={`${darkMode?"bg-customDark text-customWhite":"bg-customLight text-customBlack"}  absolute font-bold text-center w-fit text-3xl border px-5 py-1 rounded-b-lg z-30`}>SIGNUP</h2>
-        <div className={`h-40 mb-11 border-b-2 w-full bg-cover bg-center bg-no-repeat bg-gray-500`} style={{ backgroundImage: `url(${coverImage})`  }}>
-        <input
-              type="file"
-              id="coverImageInput"
-              name="coverImage"
-              accept="image/*"
-              className='w-full h-full content-center border-2 hidden'
-              onChange={handleCoverImageChange}
-              
-            />
-            {errors.coverImage && <p className="text-red-500 text-sm">{errors.coverImage.message}</p>}
+      <h2 className={`${darkMode?"bg-customDark text-customWhite":"bg-customLight text-customBlack"}  absolute font-bold text-center w-fit text-3xl  px-5 py-1 rounded-b-lg z-30 `}>SIGNUP</h2>
+        <div className={`rounded-t-md h-40 mb-11 border-b-2 w-full bg-cover bg-center bg-no-repeat bg-gray-500`} style={{ backgroundImage: `url(${coverImage})`  }}>
+                          
+                          <Controller
+                            name="coverImage"
+                            control={control}
+                            defaultValue=""
+                            render={({ field }) => (
+                              <input
+                                type="file"
+                                id="coverImageInput"
+                                accept="image/*"
+                                className="hidden w-full h-full content-center border-2"
+                                onChange={(e) => {
+                                  field.onChange(e); // Integrate with React Hook Form
+                                  handleCoverImageChange(e);
+                                }}
+                                ref={coverImageInputRef} // Attach ref to the file input
+                              />
+                            )}
+                          />
+            {errors.coverImage && <div className="text-red-500 h-full w-full rounded-full border-2 border-red-500 text-sm"></div>}
 
             
 
@@ -76,7 +90,7 @@ const Signup = ({darkMode}) => {
                 </div>
               </div>
         </div>
-        <div className='h-32 absolute w-32 rounded-full top-16 left-1/3 translate-x-3 z-50 bg-slate-400 border-gray-800 border-2 bg-cover bg-center bg-no-repeat' style={{ backgroundImage: `url(${avatar})`  }}   >
+        <div className='h-32 absolute w-32 rounded-full top-16 left-1/3 translate-x-3 z-50 bg-slate-400 border-gray-800 border bg-cover bg-center bg-no-repeat' style={{ backgroundImage: `url(${avatar})`  }}   >
  
               <input
               type="file"
@@ -89,11 +103,30 @@ const Signup = ({darkMode}) => {
                 required: 'Avatar is required',
               })}
             />
-            {errors.avatar && <div className="border-red-500 text-red-800 border-2 text-sm flex items-center justify-center  rounded-full h-full w-full ">Avatar is required </div>}
+            <Controller
+                name="avatar"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <input
+                    type="file"
+                    id="avatarInput"
+                    accept="image/*"
+                    className="w-full h-full content-center rounded-full border-2 hidden"
+                    onChange={(e) => {
+                      field.onChange(e); // Integrate with React Hook Form
+                      handleAvatarChange(e);
+                    }}
+                    ref={avatarInputRef} 
+                    
+                  />
+                )}
+              />
+            {errors.avatar && <div className="border-red-500 duration-150 shadow-sm shadow-red-500 text-red-800 border-2 text-sm flex items-center justify-center  rounded-full h-full w-full ">Avatar is required </div>}
 
             
 
-            <div className='absolute top-0 rounded-full flex flex-col bg-white/20  w-full h-full  justify-center items-center opacity-0 hover:opacity-100 duration-300' onClick={handleAvatarUpload}>  
+            <div className='absolute top-0 rounded-full flex flex-col bg-white/60  w-full h-full  justify-center items-center opacity-0 hover:opacity-100 duration-300' onClick={handleAvatarUpload}>  
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
                 </svg>
@@ -106,13 +139,13 @@ const Signup = ({darkMode}) => {
         <div className="mb-4 p-2 w-full">
           <input
             type="text"
-            className="border p-2 w-full rounded-md"
+            className={`outline-none border-b placeholder:text-gray-600 ${darkMode?"border-white":"border-gray-500"} p-2 w-full bg-transparent`}
             placeholder='Full Name'
             {...register('fullName', {
               required: 'Full name is required',
             })}
           />
-          {errors.fullName && <p className="text-red-500 text-sm">{errors.fullName.message}</p>}
+          {errors.fullName && <div className="border border-red-500 duration-150 shadow-sm shadow-red-500 h-full w-full"></div>}
         </div>
 
         {/* Username */}
@@ -120,7 +153,7 @@ const Signup = ({darkMode}) => {
           {/* <label className="block text-sm font-medium mb-1">Username</label> */}
           <input
             type="text"
-            className="border p-2 w-full"
+            className={`outline-none border-b placeholder:text-gray-600 ${darkMode?"border-white":"border-gray-500"} p-2 w-full bg-transparent`}
             placeholder='Username'
             {...register('userName', {
               required: 'Username is required',
@@ -130,7 +163,7 @@ const Signup = ({darkMode}) => {
               },
             })}
           />
-          {errors.userName && <p className="text-red-500 text-sm">{errors.userName.message}</p>}
+          {errors.userName &&  <div className="border border-red-500 duration-150 shadow-sm shadow-red-500 h-full w-full"></div>}
         </div>
 
         {/* Email */}
@@ -138,7 +171,7 @@ const Signup = ({darkMode}) => {
           {/* <label className="block text-sm font-medium mb-1">Email</label> */}
           <input
             type="email"
-            className="border p-2 w-full"
+            className={`outline-none border-b placeholder:text-gray-600 ${darkMode?"border-white":"border-gray-500"} p-2 w-full bg-transparent`}
             placeholder='Email'
             {...register('email', {
               required: 'Email is required',
@@ -148,7 +181,7 @@ const Signup = ({darkMode}) => {
               },
             })}
           />
-          {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
+          {errors.email && <div className="border border-red-500 duration-150 shadow-sm shadow-red-500 h-full w-full"></div>}
         </div>
 
         {/* Password */}
@@ -156,7 +189,7 @@ const Signup = ({darkMode}) => {
           {/* <label className="block text-sm font-medium mb-1">Password</label> */}
           <input
             type="password"
-            className="border p-2 w-full"
+            className={`outline-none border-b placeholder:text-gray-600 ${darkMode?"border-white":"border-gray-500"} p-2 w-full bg-transparent`}
             placeholder='Password'
             {...register('password', {
               required: 'Password is required',
@@ -166,7 +199,8 @@ const Signup = ({darkMode}) => {
               },
             })}
           />
-          {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
+          {errors.password &&  <div className="border border-red-500 duration-150 shadow-sm shadow-red-500 h-full w-full"></div>}
+          {errors.password &&  <p className=" text-red-500 duration-150 ">{errors.password.message}</p>}
         </div>
 
         {/* Confirm Password */}
@@ -174,7 +208,7 @@ const Signup = ({darkMode}) => {
           {/* <label className="block text-sm font-medium mb-1">Password</label> */}
           <input
             type="password"
-            className="border p-2 w-full"
+            className={`outline-none border-b placeholder:text-gray-600 ${darkMode?"border-white":"border-gray-500"} p-2 w-full bg-transparent`}
             placeholder='Confirm Password'
             {...register('password', {
               required: 'Password is required',
@@ -184,12 +218,13 @@ const Signup = ({darkMode}) => {
               },
             })}
           />
-          {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
+          {errors.password &&  <div className="border border-red-500 duration-150 shadow-sm shadow-red-500 h-full w-full"></div>}
+          {errors.password &&  <p className=" text-red-500 duration-150 ">{errors.password.message}</p>}
         </div>
 
         <button
           type="submit"
-          className="bg-blue-500 text-white p-2 text-xl rounded w-full"
+          className="bg-blue-700 text-white p-2 text-xl rounded-lg w-full"
         >
           Register
         </button>
