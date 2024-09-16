@@ -1,10 +1,10 @@
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import { useForm } from 'react-hook-form';
 import ViiTubeTheme from '../../utils/ViiTubeTheme';
 
 const Signup = ({darkMode}) => {
-  const[avatar, setAvatar] = ("")
-  const avatarInputRef = useRef(null);
+  const[avatar, setAvatar] = useState("")
+  const[coverImage, setCoverImage] = useState("")
 
   const {
     register,
@@ -17,22 +17,31 @@ const Signup = ({darkMode}) => {
     // Handle form submission (send data to the server)
   };
 
-  const convertToBase64 = (e) =>{
-    // console.log(e.target.files[0]);
-    // setAvatar(e.target.files[0])
-    var reader = new FileReader()
-    reader.readAsDataURL(e.target.files[0])
-    reader.onload=()=>{
-      console.log(reader.result);
-      setAvatar(reader.result)
+  const handleAvatarChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setAvatar(reader.result); 
+      };
+      reader.readAsDataURL(file); 
     }
-    reader.onerror=e=>{
-      console.log("Error:", e);
+  };
+  const handleCoverImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setCoverImage(reader.result); 
+      };
+      reader.readAsDataURL(file); 
     }
-  }
-
+  };
   const handleAvatarUpload = ()=>{
-    avatarInputRef.current.click()
+    document.getElementById("avatarInput").click()
+  }
+  const handleCoverImageUpload = ()=>{
+    document.getElementById("coverImageInput").click()
   }
 
   
@@ -43,37 +52,58 @@ const Signup = ({darkMode}) => {
 
       <form onSubmit={handleSubmit(onSubmit)} className='relative border flex flex-col items-center rounded-xl'>
         
-        <h2 className=" absolute font-bold text-center w-fit text-3xl border px-5 py-2 rounded-b-lg">Signup</h2>
-        <div className='h-40 mb-11 w-full border-b-2'>
-
-        </div>
-        <div className='h-32 absolute w-32 rounded-full border top-16 left-1/3 translate-x-3 z-50 bg-slate-800' style={{ backgroundImage: `url(${avatar?avatar:null})` }}  >
-          
-          <input
+      <h2 className={`${darkMode?"bg-customDark text-customWhite":"bg-customLight text-customBlack"}  absolute font-bold text-center w-fit text-3xl border px-5 py-1 rounded-b-lg z-30`}>SIGNUP</h2>
+        <div className={`h-40 mb-11 border-b-2 w-full bg-cover bg-center bg-no-repeat bg-gray-500`} style={{ backgroundImage: `url(${coverImage})`  }}>
+        <input
               type="file"
+              id="coverImageInput"
+              name="coverImage"
+              accept="image/*"
+              className='w-full h-full content-center border-2 hidden'
+              onChange={handleCoverImageChange}
+              
+            />
+            {errors.coverImage && <p className="text-red-500 text-sm">{errors.coverImage.message}</p>}
+
+            
+
+            <div className='relative  top-0 bg-white/20 flex flex-col items-end  p-2 w-full h-full  justify-end  opacity-0 hover:opacity-100 duration-300' onClick={handleCoverImageUpload}>  
+                <div className=' flex flex-col justify-center items-center  '>
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6 w-fit text-center">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
+                  </svg>
+                  <span className='text-sm w-fit font-bold'>COVER IMAGE</span>
+                </div>
+              </div>
+        </div>
+        <div className='h-32 absolute w-32 rounded-full top-16 left-1/3 translate-x-3 z-50 bg-slate-400 border-gray-800 border-2 bg-cover bg-center bg-no-repeat' style={{ backgroundImage: `url(${avatar})`  }}   >
+ 
+              <input
+              type="file"
+              id="avatarInput"
               name="avatar"
               accept="image/*"
-              ref={avatarInputRef}
-              className='w-full h-full content-center rounded-full border-2 opacity-0'
-              onChange={convertToBase64}
+              className={`w-full h-full content-center rounded-full border-2 hidden`}
+              onChange={handleAvatarChange}
               {...register('avatar', {
-                required: 'Avatar URL is required',
+                required: 'Avatar is required',
               })}
             />
+            {errors.avatar && <div className="border-red-500 text-red-800 border-2 text-sm flex items-center justify-center  rounded-full h-full w-full ">Avatar is required </div>}
+
             
-              <div className='flex flex-col justify-center items-center absolute border left-0 right-0 top-0 bottom-0' onClick={handleAvatarUpload}>  
+
+            <div className='absolute top-0 rounded-full flex flex-col bg-white/20  w-full h-full  justify-center items-center opacity-0 hover:opacity-100 duration-300' onClick={handleAvatarUpload}>  
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
                 </svg>
-                <span className='text-sm'>UPLOAD IMAGE</span>
+                <span className='text-sm font-bold'>AVATAR</span>
               </div>
-            
-          
-            {errors.avatar && <p className="text-red-500 text-sm">{errors.avatar.message}</p>}
         </div>
 
+        
         {/* Full Name */}
-        <div className="mb-4 w-full">
+        <div className="mb-4 p-2 w-full">
           <input
             type="text"
             className="border p-2 w-full rounded-md"
@@ -86,7 +116,7 @@ const Signup = ({darkMode}) => {
         </div>
 
         {/* Username */}
-        <div className="mb-4 w-full">
+        <div className="mb-4 p-2 w-full">
           {/* <label className="block text-sm font-medium mb-1">Username</label> */}
           <input
             type="text"
@@ -104,7 +134,7 @@ const Signup = ({darkMode}) => {
         </div>
 
         {/* Email */}
-        <div className="mb-4 w-full">
+        <div className="mb-4 p-2 w-full">
           {/* <label className="block text-sm font-medium mb-1">Email</label> */}
           <input
             type="email"
@@ -122,7 +152,7 @@ const Signup = ({darkMode}) => {
         </div>
 
         {/* Password */}
-        <div className="mb-4 w-full">
+        <div className="mb-4 p-2 w-full">
           {/* <label className="block text-sm font-medium mb-1">Password</label> */}
           <input
             type="password"
@@ -140,7 +170,7 @@ const Signup = ({darkMode}) => {
         </div>
 
         {/* Confirm Password */}
-        <div className="mb-4 w-full">
+        <div className="mb-4 p-2 w-full">
           {/* <label className="block text-sm font-medium mb-1">Password</label> */}
           <input
             type="password"
@@ -157,27 +187,11 @@ const Signup = ({darkMode}) => {
           {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
         </div>
 
-        {/* Avatar */}
-        <div className="mb-4 border p-2 w-full text-gray-400 flex ">
-          <label className="block text-md font-medium ">Avatar  : </label>
-          
-        </div>
-
-        {/* Cover Image */}
-        <div className="mb-4">
-          <label className="block text-sm font-medium mb-1">Cover Image (Cloudinary URL)</label>
-          <input
-            type="text"
-            className="border p-2 w-full"
-            {...register('coverImage')}
-          />
-        </div>
-
         <button
           type="submit"
-          className="bg-blue-500 text-white p-2 rounded w-full"
+          className="bg-blue-500 text-white p-2 text-xl rounded w-full"
         >
-          Sign Up
+          Register
         </button>
       </form>
     </div>
