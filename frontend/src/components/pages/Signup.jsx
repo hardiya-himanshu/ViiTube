@@ -2,6 +2,7 @@ import React, {useRef, useState} from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import ViiTubeTheme from '../../utils/ViiTubeTheme';
 
+
 const Signup = ({darkMode}) => {
   const[avatar, setAvatar] = useState("")
   const[coverImage, setCoverImage] = useState("")
@@ -59,24 +60,24 @@ const Signup = ({darkMode}) => {
       <h2 className={`${darkMode?"bg-customDark text-customWhite":"bg-customLight text-customBlack"}  absolute font-bold text-center w-fit text-3xl  px-5 py-1 rounded-b-lg z-30 `}>SIGNUP</h2>
         <div className={`rounded-t-md h-40 mb-11 border-b-2 w-full bg-cover bg-center bg-no-repeat bg-gray-500`} style={{ backgroundImage: `url(${coverImage})`  }}>
                           
-                          <Controller
-                            name="coverImage"
-                            control={control}
-                            defaultValue=""
-                            render={({ field }) => (
-                              <input
-                                type="file"
-                                id="coverImageInput"
-                                accept="image/*"
-                                className="hidden w-full h-full content-center border-2"
-                                onChange={(e) => {
-                                  field.onChange(e); // Integrate with React Hook Form
-                                  handleCoverImageChange(e);
-                                }}
-                                ref={coverImageInputRef} // Attach ref to the file input
-                              />
-                            )}
-                          />
+            <Controller
+              name="coverImage"
+              control={control}
+              defaultValue=""
+              render={({ field }) => (
+                <input
+                  type="file"
+                  id="coverImageInput"
+                  accept="image/*"
+                  className="hidden w-full h-full content-center border-2"
+                  onChange={(e) => {
+                    field.onChange(e); // Integrate with React Hook Form
+                    handleCoverImageChange(e);
+                  }}
+                  ref={coverImageInputRef} // Attach ref to the file input
+                />
+              )}
+            />
             {errors.coverImage && <div className="text-red-500 h-full w-full rounded-full border-2 border-red-500 text-sm"></div>}
 
             
@@ -224,7 +225,7 @@ const Signup = ({darkMode}) => {
 
         <button
           type="submit"
-          className="bg-blue-700 text-white p-2 text-xl rounded-lg w-full"
+          className="bg-blue-700 text-white mt-4 p-2 text-xl rounded-lg w-full"
         >
           Register
         </button>
