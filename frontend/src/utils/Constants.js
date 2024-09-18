@@ -1,0 +1,1 @@
+export const VIITUBE_SERVER = "http://localhost:8000/api/v1"

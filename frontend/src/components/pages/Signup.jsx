@@ -1,9 +1,14 @@
 import React, {useRef, useState} from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import ViiTubeTheme from '../../utils/ViiTubeTheme';
+import {VIITUBE_SERVER} from '../../utils/Constants';
+import { useNavigate } from "react-router-dom";
+import axios from 'axios';
 
 
 const Signup = ({darkMode}) => {
+  const navigate = useNavigate()
+
   const[avatar, setAvatar] = useState("")
   const[coverImage, setCoverImage] = useState("")
 
@@ -17,9 +22,42 @@ const Signup = ({darkMode}) => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
+  const onSubmit = async(data) => {
     console.log(data);
-    // Handle form submission (send data to the server)
+    const formData = new FormData();
+
+    formData.append('fullName', data.fullName);
+    formData.append('userName', data.userName);
+    formData.append('email', data.email);
+    formData.append('password', data.password);
+    
+    // Append files (avatar and coverImage if they exist)
+    if (avatarInputRef.current.files[0]) {
+      formData.append('avatar', avatarInputRef.current.files[0]);
+    }
+
+    if (coverImageInputRef.current.files[0]) {
+      formData.append('coverImage', coverImageInputRef.current.files[0]);
+    }
+    
+    try {
+      const response = await axios.post(`${VIITUBE_SERVER}/users/register`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      console.log("done");
+      
+      if (response.status === 200) {
+        console.log('Success:', response.data);
+        navigate("/login")
+      } else {
+        console.error('Error:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Request failed:', error);
+    }
+    
   };
 
   const handleAvatarChange = (e) => {
@@ -73,6 +111,8 @@ const Signup = ({darkMode}) => {
                   onChange={(e) => {
                     field.onChange(e); // Integrate with React Hook Form
                     handleCoverImageChange(e);
+                    console.log(e);
+                    
                   }}
                   ref={coverImageInputRef} // Attach ref to the file input
                 />
@@ -93,17 +133,6 @@ const Signup = ({darkMode}) => {
         </div>
         <div className='h-32 absolute w-32 rounded-full top-16 left-1/3 translate-x-3 z-50 bg-slate-400 border-gray-800 border bg-cover bg-center bg-no-repeat' style={{ backgroundImage: `url(${avatar})`  }}   >
  
-              <input
-              type="file"
-              id="avatarInput"
-              name="avatar"
-              accept="image/*"
-              className={`w-full h-full content-center rounded-full border-2 hidden`}
-              onChange={handleAvatarChange}
-              {...register('avatar', {
-                required: 'Avatar is required',
-              })}
-            />
             <Controller
                 name="avatar"
                 control={control}
@@ -123,7 +152,7 @@ const Signup = ({darkMode}) => {
                   />
                 )}
               />
-            {errors.avatar && <div className="border-red-500 duration-150 shadow-sm shadow-red-500 text-red-800 border-2 text-sm flex items-center justify-center  rounded-full h-full w-full ">Avatar is required </div>}
+            {/* {errors.avatar && <div className="border-red-500 duration-150 shadow-sm shadow-red-500 text-red-800 border-2 text-sm flex items-center justify-center  rounded-full h-full w-full ">Avatar is required </div>} */}
 
             
 
