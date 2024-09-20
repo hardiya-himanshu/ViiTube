@@ -4,7 +4,7 @@ import ViiTubeTheme from '../../utils/ViiTubeTheme'
 function Sidebar({darkMode, isSidebarVisible, toggleSidebar}) {
   const sidebarItems = ["Home", "Channel", "Dashboard", "Subscriptions", "Subscribers", "Watch History", "Playlists", "Liked Videos", "Comments", "Tweets"]
   return (
-    <div className={`${darkMode?"bg-customDark text-customWhite":"bg-customLight text-customBlack"} ${isSidebarVisible?"transform translate-x-0 transition-transform duration-200 ease-in-out":"transform -translate-x-full transition-transform duration-500 ease-in-out"} absolute w-2/12 top-0 h-full z-30`}>
+    <div className={`${darkMode?"bg-customDark text-customWhite":"bg-customLight text-customBlack"} ${isSidebarVisible?"transform translate-x-0 transition-transform duration-200 ease-in-out":"transform -translate-x-full transition-transform duration-500 ease-in-out"} min-w-40  absolute w-2/12 top-0 h-full z-30`}>
       <div className='absolute px-4 py-3  z-50 w-full'>
         <svg onClick={toggleSidebar} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 22" strokeWidth={1.5} stroke="currentColor" className="size-6 hover:cursor-pointer">
           <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
