@@ -39,6 +39,8 @@ const Signup = ({darkMode}) => {
     if (coverImageInputRef.current.files[0]) {
       formData.append('coverImage', coverImageInputRef.current.files[0]);
     }
+    console.log(formData);
+    return
     
     try {
       const response = await axios.post(`${VIITUBE_SERVER}/users/register`, formData, {

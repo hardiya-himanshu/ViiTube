@@ -2,8 +2,12 @@ import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import ViiTubeTheme from '../../utils/ViiTubeTheme';
 import '../../css/BlurAnimatedBg.css'
+import {VIITUBE_SERVER} from '../../utils/Constants';
+import { useNavigate } from "react-router-dom";
+import axios from 'axios';
 
 const Login = ({darkMode}) => {
+  const navigate = useNavigate()
 
   const {
     control,
@@ -12,9 +16,26 @@ const Login = ({darkMode}) => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
+  const onSubmit = async(data) => {
     console.log(data);
-    // Handle form submission (send data to the server)
+    const formData = new FormData();
+    formData.append('email', data.email);
+    formData.append('password', data.password);
+    console.log(formData);
+    
+    try {
+      const response = await axios.post(`${VIITUBE_SERVER}/users/login`, formData);
+      console.log("done");
+      
+      if (response.status === 200) {
+        console.log('Success:', response.data);
+        navigate("/")
+      } else {
+        console.error('Error:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Request failed:', error);
+    }
   };
 
   

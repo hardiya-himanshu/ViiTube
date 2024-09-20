@@ -84,7 +84,9 @@ const loginUser = asyncHandler(async(req, res)=>{
     // access and refresh token generation
     // send cookies
 
-    const {userName, email, password} = req.body
+    const {email, password, userName} = req.body
+    console.log(email, " ", password);
+    
     if(!(userName || email)) throw new ApiError(400, "Username or email is required")
 
     const user = await User.findOne({
@@ -101,7 +103,7 @@ const loginUser = asyncHandler(async(req, res)=>{
     const loggedInUser = await User.findById(user._id).select("-password -refreshToken")
 
     const options = {httpOnly:true, secure:true}
-    return res.status(201).cookie("accessToken", accessToken, options).cookie("refreshToken", refreshToken, options).json(new ApiResponse(200, {user:loggedInUser, accessToken, refreshToken}, "User Logged In Successfully"))
+    return res.status(200).cookie("accessToken", accessToken, options).cookie("refreshToken", refreshToken, options).json(new ApiResponse(200, {user:loggedInUser, accessToken, refreshToken}, "User Logged In Successfully"))
 })
 
 const logoutUser = asyncHandler(async(req, res)=>{
