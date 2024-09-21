@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import './App.css'
 import Header from './components/header/Header'
-import Sidebar from './components/sidebar/Sidebar'
+import Sidebar from './components/sidebars/LeftSidebar'
 import {Outlet} from 'react-router-dom'
 import Footer from './components/footer/Footer'
 import ViiTubeTheme from './utils/ViiTubeTheme'
