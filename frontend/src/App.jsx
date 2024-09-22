@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import './App.css'
 import Header from './components/header/Header'
-import Sidebar from './components/sidebars/LeftSidebar'
-import Settingbar from './components/sidebars/RightSidebar'
+import LeftSideBar from './components/sidebars/LeftSideBar'
+import RightSideBar from './components/sidebars/RightSideBar'
 import {Outlet} from 'react-router-dom'
 import Footer from './components/footer/Footer'
 import ViiTubeTheme from './utils/ViiTubeTheme'
@@ -19,24 +19,23 @@ function App({darkMode}) {
   }
 
   return (
-    <div className='border-2 border-red-500 '>
+    <div>
       <header>
         <Header toggleSidebar={toggleSidebar} toggleSettingbar={toggleSettingbar}/>
       </header>
-      <main className={`${darkMode?"bg-customDark":"bg-customLight"}`}>
+      <main className={`${darkMode?"bg-customDark":"bg-customLight"} `}>
         <aside>
-          <Sidebar toggleSidebar={toggleSidebar} isSidebarVisible={isSidebarVisible}/>
+          <LeftSideBar toggleSidebar={toggleSidebar} isSidebarVisible={isSidebarVisible}/>
         </aside>
-        <section style={{ height: "calc(100vh - 54px)" }}  className={`${isSidebarVisible?"w-10/12":"w-full"} transition-all ease-in-out duration-300 h-full`}>
-        
-        <div className={`${darkMode?"bg-customDark":"bg-customLight"} relative h-full p-1 `}>
-          <div className={`${darkMode?"bg-customDark2 text-customWhite":"bg-customLight2 text-customBlack"} h-full  rounded-lg p-2`}>
-            <Outlet/>
+        <section style={{ height: "calc(100vh - 51px)" }}  className={`${isSidebarVisible?`${isSettingbarVisible?"w-8/12 left-1/2 transform -translate-x-1/2 ":"w-10/12 right-0"}`:`${isSettingbarVisible?"w-10/12 left-0":"w-full"}`} fixed  transition-all ease-in-out duration-0 h-full ${darkMode?"bg-customDark":"bg-customLight"}`}>
+          <div className={`${darkMode?"bg-customDark":"bg-customLight"} p-1 h-full `}>
+            <div className={`${darkMode?"bg-customDark2 text-customWhite":"bg-customLight2 text-customBlack"} h-full  rounded-lg p-2`}>
+              <Outlet/>
+            </div>
           </div>
-        </div>
         </section>
         <aside>
-          <Settingbar toggleSettingbar={toggleSettingbar} isSettingbarVisible={isSettingbarVisible}/>
+          <RightSideBar toggleSettingbar={toggleSettingbar} isSettingbarVisible={isSettingbarVisible}/>
         </aside>
       </main>
       <footer>
