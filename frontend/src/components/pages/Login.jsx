@@ -5,10 +5,13 @@ import '../../css/BlurAnimatedBg.css'
 import {VIITUBE_SERVER} from '../../utils/Constants';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { login } from '../../store/authSlice';
 
 const Login = ({darkMode}) => {
   const navigate = useNavigate()
-
+  const dispatch = useDispatch()
+  
   const {
     control,
     register,
@@ -28,6 +31,7 @@ const Login = ({darkMode}) => {
       
       if (response.status === 200) {
         console.log('Success:', response.data);
+        dispatch(login(response.data))
         navigate("/")
       } else {
         console.error('Error:', response.statusText);

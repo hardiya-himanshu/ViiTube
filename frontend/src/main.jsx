@@ -12,6 +12,7 @@ import App from './App.jsx'
 import Home from './components/pages/Home.jsx'
 import Login from './components/pages/Login.jsx'
 import Signup from './components/pages/Signup.jsx'
+import AuthLayout from './utils/AuthLayout.jsx'
 
 const router = createBrowserRouter([
   {
@@ -20,7 +21,9 @@ const router = createBrowserRouter([
     children:[
       {
         path: "/",
-        element: <Home />,
+        element:  <AuthLayout auth="false">
+                    <Home />,
+                  </AuthLayout>
       },
       
     ]

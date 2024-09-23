@@ -1,10 +1,8 @@
 import React, {useState} from 'react'
-import { useDispatch, useSelector} from 'react-redux'
 
 
-function Home() {
-  const [loader, setLoader] = useState(true)
-  const authStatus = useSelector(state => state.auth.status)
+function Home({authStatus}) {
+    
   return (
     <div className='flex justify-center items-center h-full'>
       {
