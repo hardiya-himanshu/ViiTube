@@ -32,6 +32,7 @@ const Login = ({darkMode}) => {
       if (response.status === 200) {
         console.log('Success:', response.data);
         dispatch(login(response.data))
+        console.log("dispatch done");
         navigate("/")
       } else {
         console.error('Error:', response.statusText);

@@ -40,7 +40,7 @@
 import React from 'react'
 import ViiTubeTheme from '../../utils/ViiTubeTheme'
 
-function RightSideBar({darkMode, isSettingbarVisible, toggleSettingbar}) {
+function RightSideBar({darkMode, isSettingbarVisible, toggleSettingbar, authStatus}) {
     const sidebarItemsTop = ["User Setting", "Channel", "Dashboard", "Logout"]
     const sidebarItemsBottom = ["About", "Terms", "Policy", "Contact"]
     return (
@@ -50,7 +50,9 @@ function RightSideBar({darkMode, isSettingbarVisible, toggleSettingbar}) {
           <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
         </svg>
       </div>
-      <div className='p-3 flex flex-col justify-between h-full z-40 pt-16'>
+      {
+        authStatus?
+        <div className='p-3 flex flex-col justify-between h-full z-40 pt-16'>
         <ul className='flex flex-col gap-3'>
           {
             sidebarItemsTop.map((item, index)=>(
@@ -74,6 +76,12 @@ function RightSideBar({darkMode, isSettingbarVisible, toggleSettingbar}) {
           }
         </ul>
       </div>
+      :
+      <div>
+        
+      </div>
+      }
+      
     </div>
     )
 }

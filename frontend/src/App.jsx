@@ -6,8 +6,9 @@ import RightSideBar from './components/sidebars/RightSideBar'
 import {Outlet} from 'react-router-dom'
 import Footer from './components/footer/Footer'
 import ViiTubeTheme from './utils/ViiTubeTheme'
+import AuthLayout from './utils/AuthLayout'
 
-function App({darkMode}) {
+function App({darkMode, authStatus}) {
   
   const[isSidebarVisible, setSidebarState] = useState(false)
   const toggleSidebar = ()=>{
@@ -30,7 +31,7 @@ function App({darkMode}) {
         <section style={{ height: "calc(100vh - 51px)" }}  className={`${isSidebarVisible?`${isSettingbarVisible?"w-8/12 left-1/2 transform -translate-x-1/2 ":"w-10/12 right-0"}`:`${isSettingbarVisible?"w-10/12 left-0":"w-full"}`} fixed  transition-all ease-in-out duration-0 h-full ${darkMode?"bg-customDark":"bg-customLight"}`}>
           <div className={`${darkMode?"bg-customDark":"bg-customLight"} p-1 h-full `}>
             <div className={`${darkMode?"bg-customDark2 text-customWhite":"bg-customLight2 text-customBlack"} h-full  rounded-lg p-2`}>
-              <Outlet/>
+              <Outlet />
             </div>
           </div>
         </section>
@@ -45,4 +46,4 @@ function App({darkMode}) {
   )
 }
 
-export default ViiTubeTheme(App)
+export default AuthLayout(ViiTubeTheme(App))

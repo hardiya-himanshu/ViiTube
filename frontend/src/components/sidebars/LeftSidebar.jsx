@@ -1,7 +1,7 @@
 import React from 'react'
 import ViiTubeTheme from '../../utils/ViiTubeTheme'
 
-function LeftSideBar({darkMode, isSidebarVisible, toggleSidebar}) {
+function LeftSideBar({darkMode, isSidebarVisible, toggleSidebar, authStatus}) {
   const sidebarItems = ["Home", "Channel", "Dashboard", "Subscriptions", "Subscribers", "Watch History", "Playlists", "Liked Videos", "Comments", "Tweets"]
   return (
     <div className={`${darkMode?"bg-customDark text-customWhite":"bg-customLight text-customBlack"} ${isSidebarVisible?"transform translate-x-0 transition-transform duration-0 ease-in-out":"transform -translate-x-full left-0 transition-transform duration-0 ease-in-out"} min-w-40  absolute w-2/12 top-0 h-full z-30`}>
@@ -10,7 +10,9 @@ function LeftSideBar({darkMode, isSidebarVisible, toggleSidebar}) {
           <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
         </svg>
       </div>
-      <div className='p-3 flex flex-col justify-between h-full z-40 pt-16'>
+      {
+        authStatus?
+        <div className='p-3 flex flex-col justify-between h-full z-40 pt-16'>
         <ul className='flex flex-col gap-3'>
           {
             sidebarItems.map((item, index)=>(
@@ -30,6 +32,12 @@ function LeftSideBar({darkMode, isSidebarVisible, toggleSidebar}) {
           </li>
         </ul>
       </div>
+      :
+      <div>
+        
+      </div>
+      }
+      
     </div>
   )
 }
