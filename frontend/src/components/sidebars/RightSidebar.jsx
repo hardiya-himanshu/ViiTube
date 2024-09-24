@@ -50,13 +50,11 @@ function RightSideBar({darkMode, isSettingbarVisible, toggleSettingbar, authStat
           <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
         </svg>
       </div>
-      {
-        authStatus?
-        <div className='p-3 flex flex-col justify-between h-full z-40 pt-16'>
+      <div className={`${authStatus?"":"blur-sm"} p-3 flex flex-col justify-between h-full z-40 pt-16`}>
         <ul className='flex flex-col gap-3'>
           {
             sidebarItemsTop.map((item, index)=>(
-              <li key={index} className={`py-2 hover:cursor-pointer px-2 rounded-lg ${darkMode?"hover:bg-zinc-800":"hover:bg-zinc-200"} duration-100`}>
+              <li key={index} className={`py-2 ${authStatus?`hover:cursor-pointer ${darkMode?"hover:bg-zinc-800":"hover:bg-zinc-200"}`:"cursor-default pointer-events-none"} px-2 rounded-lg $ duration-100`}>
                   <div>
                     {item}
                   </div>
@@ -67,7 +65,7 @@ function RightSideBar({darkMode, isSettingbarVisible, toggleSettingbar, authStat
         <ul className='flex flex-col gap-1'>
           {
             sidebarItemsBottom.map((item, index)=>(
-              <li key={index} className={`py-2 hover:cursor-pointer text-sm px-2 rounded-lg ${darkMode?"hover:bg-zinc-800":"hover:bg-zinc-200"} duration-100`}>
+              <li key={index} className={`py-2 text-sm px-2 rounded-lg ${authStatus?`hover:cursor-pointer ${darkMode?"hover:bg-zinc-800":"hover:bg-zinc-200"}`:"cursor-default pointer-events-none"} duration-100`}>
                   <div>
                     {item}
                   </div>
@@ -76,11 +74,6 @@ function RightSideBar({darkMode, isSettingbarVisible, toggleSettingbar, authStat
           }
         </ul>
       </div>
-      :
-      <div>
-        
-      </div>
-      }
       
     </div>
     )
