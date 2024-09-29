@@ -1,16 +1,18 @@
 import React, {useState} from 'react'
 import { useNavigate } from "react-router-dom";
+import { useSelector } from 'react-redux';
 
-
-function Home({authStatus}) {
+function Home() {
   const navigate = useNavigate()
-    
+  const authStatus = useSelector(state => state.auth.status)
+  console.log(authStatus);
+
   return (
     <div className='flex justify-center items-center h-full'>
       {
         authStatus?
-        <div>
-
+        <div className='text-3xl'>
+            Welcome to Viitube
         </div>
         :
         <div className='text-3xl'>

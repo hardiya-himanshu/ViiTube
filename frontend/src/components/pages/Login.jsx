@@ -20,19 +20,15 @@ const Login = ({darkMode}) => {
   } = useForm();
 
   const onSubmit = async(data) => {
-    console.log(data);
-    
     try {
       const response = await axios.post(`${VIITUBE_SERVER}/users/login`, {
         email:data.email,
         password:data.password
       });
-      console.log("done");
       
       if (response.status === 200) {
         console.log('Success:', response.data);
         dispatch(login(response.data))
-        console.log("dispatch done");
         navigate("/")
       } else {
         console.error('Error:', response.statusText);

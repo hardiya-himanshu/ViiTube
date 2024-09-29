@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import ViiTubeTheme from '../../utils/ViiTubeTheme'
 
 function Header({darkMode, onToggleTheme, toggleSidebar, toggleSettingbar}) {
     const[userIconClicked, setUserIconClicked] = useState(false)
@@ -52,4 +51,4 @@ function Header({darkMode, onToggleTheme, toggleSidebar, toggleSettingbar}) {
   )
 }
 
-export default ViiTubeTheme(Header)
+export default Header
