@@ -28,6 +28,10 @@ function App() {
   }
 
   const authStatus = useSelector(state => state.auth.status)
+
+  useEffect(()=>{
+    console.log(authStatus);
+  },[authStatus])
   
   return (
     <div>

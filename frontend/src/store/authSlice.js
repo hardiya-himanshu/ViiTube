@@ -3,7 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     status : false,
     userData: null,
-    refreshToken: null
+    refreshToken: null,
+    accessToken: null
 }
 
 const authSlice = createSlice({
@@ -12,20 +13,23 @@ const authSlice = createSlice({
     reducers:{
         login: (state, action) => {
             state.status = true;
-            state.userData = action.payload;
+            state.userData = action.payload.userData;
+            state.refreshToken = action.payload.refreshToken;
+            state.accessToken = action.payload.accessToken;
             console.log("changed and data stored\n");
-            state.refreshToken = action.payload.data.refreshToken;
-            console.log(action.payload.data.refreshToken);
-            localStorage.setItem("refreshToken", action.payload.data.refreshToken);
+            console.log(action.payload.refreshToken);
         },
         logout: (state) => {
             state.status = false;
             state.userData = null;
             state.refreshToken = null;
             localStorage.removeItem("refreshToken");
+        },
+        refreshAccessToken: (state, action) => {
+            state.accessToken = action.payload.data.accessToken;
         }
     }
 })
 
-export const {login, logout} = authSlice.actions
+export const {login, logout, refreshAccessToken} = authSlice.actions
 export default authSlice.reducer

@@ -28,7 +28,10 @@ const Login = ({darkMode}) => {
       
       if (response.status === 200) {
         console.log('Success:', response.data);
-        dispatch(login(response.data))
+        const {accessToken, refreshToken, userData} = response.data
+        dispatch(login({accessToken, refreshToken, userData}))
+        localStorage.setItem("accessToken", accessToken)
+        localStorage.setItem("refreshToken", refreshToken)
         navigate("/")
       } else {
         console.error('Error:', response.statusText);
