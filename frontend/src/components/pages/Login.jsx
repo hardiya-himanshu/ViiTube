@@ -42,6 +42,7 @@ const Login = ({darkMode}) => {
   };
 
   
+  
   return (
     <div className='w-full'>
     <div className={`${darkMode?"bg-customDark text-customWhite":"bg-customLight text-customBlack"} max-w-md mx-auto mt-10 overflow-hidden rounded-xl p-1`}>
