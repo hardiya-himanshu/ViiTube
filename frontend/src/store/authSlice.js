@@ -1,10 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    status : false,
+    status : localStorage.getItem("status") || false,
     userData: null,
-    refreshToken: null,
-    accessToken: null
+    // accessToken: null
 }
 
 const authSlice = createSlice({
@@ -14,16 +13,14 @@ const authSlice = createSlice({
         login: (state, action) => {
             state.status = true;
             state.userData = action.payload.userData;
-            state.refreshToken = action.payload.refreshToken;
-            state.accessToken = action.payload.accessToken;
-            console.log("changed and data stored\n");
-            console.log(action.payload.refreshToken);
+            localStorage.setItem("status", true);
+            // state.accessToken = action.payload.data.accessToken;
         },
         logout: (state) => {
             state.status = false;
             state.userData = null;
-            state.refreshToken = null;
-            localStorage.removeItem("refreshToken");
+            localStorage.removeItem("status");
+            // state.accessToken = null;
         },
         refreshAccessToken: (state, action) => {
             state.accessToken = action.payload.data.accessToken;

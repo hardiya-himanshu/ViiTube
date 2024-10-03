@@ -39,10 +39,35 @@
 
 import React from 'react'
 import ViiTubeTheme from '../../utils/ViiTubeTheme'
+import { useDispatch } from 'react-redux'
+import { logout } from '../../store/authSlice'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
+import { VIITUBE_SERVER } from '../../utils/Constants'
 
 function RightSideBar({darkMode, isSettingbarVisible, toggleSettingbar, authStatus}) {
     const sidebarItemsTop = ["User Setting", "Channel", "Dashboard", "Logout"]
     const sidebarItemsBottom = ["About", "Terms", "Policy", "Contact"]
+
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const logoutUser = async()=>{
+      try {
+        const response = await axios.post(`${VIITUBE_SERVER}/users/logout`, {}, {
+          withCredentials: true
+        }); 
+        
+        if (response.status === 200) {
+          dispatch(logout())
+          navigate("/login")
+        } else {
+          console.error('Error:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Request failed:', error);
+      }
+    }
+
     return (
       <div className={`${darkMode?"bg-customDark text-customWhite":"bg-customLight text-customBlack"} ${isSettingbarVisible?"transform translate-x-0 right-0 transition-transform duration-0 ease-in-out":"duration-0 transform translate-x-full right-0  transition-transform ease-in-out"} min-w-40 fixed w-2/12 top-0 h-full z-30 `}>
       <div className='absolute px-4 py-3  z-50 w-full flex justify-end'>
@@ -54,7 +79,7 @@ function RightSideBar({darkMode, isSettingbarVisible, toggleSettingbar, authStat
         <ul className='flex flex-col gap-3'>
           {
             sidebarItemsTop.map((item, index)=>(
-              <li key={index} className={`py-2 ${authStatus?`hover:cursor-pointer ${darkMode?"hover:bg-zinc-800":"hover:bg-zinc-200"}`:"cursor-default pointer-events-none"} px-2 rounded-lg $ duration-100`}>
+              <li key={index} className={`py-2 ${authStatus?`hover:cursor-pointer ${darkMode?"hover:bg-zinc-800":"hover:bg-zinc-200"}`:"cursor-default pointer-events-none"} px-2 rounded-lg $ duration-100`} onClick={item==="Logout"?logoutUser:null}>
                   <div>
                     {item}
                   </div>
